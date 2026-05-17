@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model PersonalInfo {
+  id          Int      @id @default(autoincrement())
+  fullName    String
+  role        String
+  email       String
+  linkedin    String
+  github      String
+  education   String
+  specialization String
+  university  String
+  cgpa        Float
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String   @db.Text
+  techStack   String   // Comma-separated or JSON
+  githubLink  String?
+  liveLink    String?
+  thumbnail   String?
+  createdAt   DateTime @default(now())
+}
+
+model Skill {
+  id          Int      @id @default(autoincrement())
+  name        String
+  category    String
+  level       Int      // 0-100
+}
+
+model Certificate {
+  id          Int      @id @default(autoincrement())
+  title       String
+  issuer      String
+  date        String
+  image       String?
+}
+
+model Blog {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String   @db.LongText
+  image       String?
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Feedback {
+  id        Int      @id @default(autoincrement())
+  userName  String
+  rating    Int
+  comment   String   @db.Text
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Analytics {
+  id              Int      @id @default(autoincrement())
+  totalVisitors   Int      @default(0)
+  resumeDownloads Int      @default(0)
+  lastUpdated     DateTime @default(now())
+}
+
+model ChatbotMessage {
+  id        Int      @id @default(autoincrement())
+  query     String   @db.Text
+  response  String   @db.Text
+  createdAt DateTime @default(now())
+}
